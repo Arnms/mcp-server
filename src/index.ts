@@ -4,4 +4,5 @@ const server = new MCPServer();
 
 server.start().catch((error) => {
   console.error('서버 오류:', error);
+  process.exit(1);
 });
