@@ -2,21 +2,32 @@
   "name": "mcp-server",
   "version": "0.0.1",
   "description": "mcp-server MCP server",
+  "main": "dist/index.js",
   "type": "module",
   "bin": {
     "mcp-server": "./dist/index.js"
   },
   "files": [
-    "dist"
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
-    "build": "tsc && mcp-build",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node --esm src/index.ts",
     "watch": "tsc --watch",
-    "start": "node dist/index.js"
+    "clean": "rm -rf dist",
+    "start:advanced": "MCP_SERVER_TYPE=advanced node dist/index.js",
+    "dev:advanced": "MCP_SERVER_TYPE=advanced ts-node --esm src/index.ts",
+    "lint": "eslint src/**/*.ts",
+    "test": "jest"
   },
+  "author": "Arnms",
+  "license": "MIT",
   "dependencies": {
-    "axios": "^1.9.0",
-    "mcp-framework": "^0.2.2"
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "axios": "^1.9.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.24",

@@ -1,149 +1,54 @@
-# mcp-server
+# MCP Task Server
+TypeScript로 구현된 Model Context Protocol (MCP) 서버입니다. 태스크 관리 기능과 계산기 기능을 제공합니다.
+기능
+고급 태스크 서버 (기본값)
 
-A Model Context Protocol (MCP) server built with mcp-framework.
+Tools: 태스크 생성, 조회, 완료, 삭제
+Resources: 태스크 데이터와 통계에 대한 JSON 리소스
+Prompts: 태스크 요약 및 리마인더 프롬프트 템플릿
 
-## Quick Start
+계산기 서버
 
-```bash
-# Install dependencies
-npm install
+Tools: 기본 수학 연산 (덧셈, 곱셈, 나눗셈)
 
-# Build the project
+설치
+bashnpm install
+개발
+bash# TypeScript 컴파일
 npm run build
 
-```
+# 개발 모드 (고급 태스크 서버)
+npm run dev
 
-## Project Structure
+# 개발 모드 (계산기 서버)
+npm run dev:calculator
 
-```
-mcp-server/
-├── src/
-│   ├── tools/        # MCP Tools
-│   │   └── ExampleTool.ts
-│   └── index.ts      # Server entry point
-├── package.json
-└── tsconfig.json
-```
+# 타입 체크와 함께 감시 모드
+npm run watch
+실행
+bash# 프로덕션 모드 (고급 태스크 서버)
+npm start
 
-## Adding Components
+# 계산기 서버
+npm run start:calculator
 
-The project comes with an example tool in `src/tools/ExampleTool.ts`. You can add more tools using the CLI:
-
-```bash
-# Add a new tool
-mcp add tool my-tool
-
-# Example tools you might create:
-mcp add tool data-processor
-mcp add tool api-client
-mcp add tool file-handler
-```
-
-## Tool Development
-
-Example tool structure:
-
-```typescript
-import { MCPTool } from "mcp-framework";
-import { z } from "zod";
-
-interface MyToolInput {
-  message: string;
-}
-
-class MyTool extends MCPTool<MyToolInput> {
-  name = "my_tool";
-  description = "Describes what your tool does";
-
-  schema = {
-    message: {
-      type: z.string(),
-      description: "Description of this input parameter",
-    },
-  };
-
-  async execute(input: MyToolInput) {
-    // Your tool logic here
-    return `Processed: ${input.message}`;
-  }
-}
-
-export default MyTool;
-```
-
-## Publishing to npm
-
-1. Update your package.json:
-   - Ensure `name` is unique and follows npm naming conventions
-   - Set appropriate `version`
-   - Add `description`, `author`, `license`, etc.
-   - Check `bin` points to the correct entry file
-
-2. Build and test locally:
-   ```bash
-   npm run build
-   npm link
-   mcp-server  # Test your CLI locally
-   ```
-
-3. Login to npm (create account if necessary):
-   ```bash
-   npm login
-   ```
-
-4. Publish your package:
-   ```bash
-   npm publish
-   ```
-
-After publishing, users can add it to their claude desktop client (read below) or run it with npx
-```
-
-## Using with Claude Desktop
-
-### Local Development
-
-Add this configuration to your Claude Desktop config file:
-
-**MacOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-**Windows**: `%APPDATA%/Claude/claude_desktop_config.json`
-
-```json
-{
-  "mcpServers": {
-    "mcp-server": {
-      "command": "node",
-      "args":["/absolute/path/to/mcp-server/dist/index.js"]
-    }
-  }
-}
-```
-
-### After Publishing
-
-Add this configuration to your Claude Desktop config file:
-
-**MacOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-**Windows**: `%APPDATA%/Claude/claude_desktop_config.json`
-
-```json
-{
-  "mcpServers": {
-    "mcp-server": {
-      "command": "npx",
-      "args": ["mcp-server"]
-    }
-  }
-}
-```
-
-## Building and Testing
-
-1. Make changes to your tools
-2. Run `npm run build` to compile
-3. The server will automatically load your tools on startup
-
-## Learn More
-
-- [MCP Framework Github](https://github.com/QuantGeekDev/mcp-framework)
-- [MCP Framework Docs](https://mcp-framework.com)
+# 또는 환경 변수로 직접 제어
+MCP_SERVER_TYPE=calculator npm start
+MCP_SERVER_TYPE=advanced npm start
+프로젝트 구조
+src/
+├── index.ts                 # 진입점
+├── server/
+│   ├── base-server.ts      # 기본 계산기 서버
+│   └── advanced-server.ts  # 고급 태스크 서버
+├── handlers/
+│   ├── tool-handler.ts     # 도구 요청 핸들러
+│   ├── resource-handler.ts # 리소스 요청 핸들러
+│   └── prompt-handler.ts   # 프롬프트 요청 핸들러
+├── services/
+│   └── task-service.ts     # 태스크 비즈니스 로직
+├── models/
+│   ├── task.ts            # 태스크 데이터 모델
+│   └── server-config.ts   # 서버 설정 및 스키마
+└── types/
+    └── index.ts           # TypeScript 타입 정의
