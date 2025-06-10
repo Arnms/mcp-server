@@ -1,7 +1,7 @@
 import { AdvancedTaskServer } from './server/advanced-server.js';
 
 // 환경 변수로 서버 타입 결정
-const SERVER_TYPE = process.env['MCP_SERVER_TYPE'] || 'advanced';
+const SERVER_TYPE = 'advanced';
 
 async function main() {
   let server: AdvancedTaskServer;
@@ -39,11 +39,9 @@ process.on('uncaughtException', (error) => {
 });
 
 // 서버 실행
-if (require.main === module) {
-  main().catch((error) => {
-    console.error('Server failed to start:', error);
-    process.exit(1);
-  });
-}
+main().catch((error) => {
+  console.error('Server failed to start:', error);
+  process.exit(1);
+});
 
 export { AdvancedTaskServer };
